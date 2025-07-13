@@ -23,4 +23,6 @@ export abstract class VendorRepository {
   abstract countVendors(options: Partial<Vendor>): Promise<number>;
 
   abstract vendorExists(options: Partial<Vendor>[]): Promise<boolean>;
+
+  abstract slugExists(slug: string): Promise<boolean>;
 }

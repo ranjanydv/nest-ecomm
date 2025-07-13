@@ -22,7 +22,12 @@ export class Vendor {
   static readonly #validator = z.object({
     userId: z.string().uuid(),
     storeName: z.string().min(1).max(100),
-    slug: z.string().min(1).max(100).regex(/^[a-z0-9-]+$/),
+    slug: z
+      .string()
+      .min(1)
+      .max(100)
+      .regex(/^[a-z0-9-]+$/)
+      .nullish(),
     description: z.string().max(1000).nullish(),
     logoUrl: z.string().url().max(255).nullish(),
     bannerUrl: z.string().url().max(255).nullish(),

@@ -39,12 +39,13 @@ export class CreateVendorDto {
   @IsString()
   storeName: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
+  @IsOptional()
   @Matches(/^[a-z0-9-]+$/, {
     message: 'Slug must contain only lowercase letters, numbers, and hyphens',
   })
-  slug: string;
+  slug?: string;
 
   @ApiProperty({ required: false })
   @IsString()

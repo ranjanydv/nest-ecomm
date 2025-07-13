@@ -25,4 +25,23 @@ export abstract class VendorUseCase {
   ): Promise<boolean | never>;
 
   abstract countVendors(options?: Partial<Vendor>): Promise<number>;
+
+  abstract registerVendor(
+    userData: {
+      userName?: string;
+      email: string;
+      password: string;
+      phone?: string;
+      image?: string;
+    },
+    vendorData: {
+      storeName: string;
+      description?: string;
+      logoUrl?: string;
+      bannerUrl?: string;
+      websiteUrl?: string;
+      phoneNumber?: string;
+      establishedDate?: Date;
+    },
+  ): Promise<{ user: any; vendor: Vendor }>;
 }

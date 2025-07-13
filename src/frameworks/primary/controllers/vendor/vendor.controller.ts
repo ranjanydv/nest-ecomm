@@ -20,11 +20,13 @@ import {
   QueryVendorDto,
   UpdateVendorDto,
 } from '../../dto/request/vendor/vendor.dto';
+import { VendorRegistrationDto } from '../../dto/request/vendor/vendor-registration.dto';
 import { VendorUseCase } from 'src/core/ports/in/vendor/vendor-usecase.port';
 import { Vendor } from 'src/core/domain/vendor/vendor.domain';
 import { Privileges } from '../../decorators/privilege.decorator';
 import { PRIVILEGE_SUBNAME } from 'src/common/enums/privilege/privilege.enum';
 import { Transactional } from 'typeorm-transactional';
+import { Public } from '../../decorators/public.decorator';
 
 @ApiBearerAuth()
 @ApiTags('Vendor')
@@ -70,6 +72,36 @@ export class VendorController {
       'Vendor Fetched',
       new VendorResponseDto(await this.vendorUseCase.getVendorBySlug(slug)),
     );
+  }
+
+  @Public()
+  @Post('register')
+  @ApiOperation({ summary: 'Register as vendor' })
+  @Transactional()
+  async register(@Body() registrationDto: VendorRegistrationDto) {
+    const { establishedDate, ...vendorData } = registrationDto;
+
+    const result = await this.vendorUseCase.registerVendor(
+      {
+        userName: registrationDto.userName,
+        email: registrationDto.email,
+        password: registrationDto.password,
+        phone: registrationDto.phone,
+        image: registrationDto.image,
+      },
+      {
+        ...vendorData,
+        establishedDate: establishedDate
+          ? new Date(establishedDate)
+          : undefined,
+      },
+    );
+
+    return new ResponseDto('Vendor Registration Successful', {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      user: result.user,
+      vendor: new VendorResponseDto(result.vendor),
+    });
   }
 
   @Post()

@@ -1,22 +1,19 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 import {
+  IsDate,
   IsEmail,
   IsEnum,
-  IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsPhoneNumber,
   IsString,
+  IsUrl,
   IsUUID,
   MaxLength,
   MinLength,
-  Matches,
-  IsUrl,
-  IsDate,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
-import { QueryDto } from '../query.dto';
 import { VENDOR_STATUS } from '../../../../../common/enums/vendor/vendor.enum';
+import { QueryDto } from '../query.dto';
 
 export class QueryVendorDto extends QueryDto {
   @ApiProperty({ required: false })

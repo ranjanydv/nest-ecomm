@@ -82,4 +82,8 @@ export class VendorRepositoryImpl implements VendorRepository {
   async countVendors(options: Partial<Vendor>): Promise<number> {
     return await this.vendorRepository.countBy(options);
   }
+
+  async slugExists(slug: string): Promise<boolean> {
+    return await this.vendorRepository.existsBy({ slug });
+  }
 }

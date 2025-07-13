@@ -70,3 +70,28 @@ function getTotalKeysRecursive(obj: any = []): number {
 
   return totalKeys;
 }
+
+export const generateSlug = (name: string): string => {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+};
+
+export const generateUniqueSlug = async (
+  baseSlug: string,
+  checkSlugExists: (slug: string) => Promise<boolean>,
+): Promise<string> => {
+  let slug = baseSlug;
+  let counter = 1;
+
+  while (await checkSlugExists(slug)) {
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+
+  return slug;
+};

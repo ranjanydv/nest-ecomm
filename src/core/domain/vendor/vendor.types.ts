@@ -3,7 +3,7 @@ import { VENDOR_STATUS } from 'src/common/enums/vendor/vendor.enum';
 export type CreateVendorProps = {
   userId: string;
   storeName: string;
-  slug: string;
+  slug?: string;
   description?: string;
   logoUrl?: string;
   bannerUrl?: string;
