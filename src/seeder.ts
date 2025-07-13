@@ -17,9 +17,9 @@ export class Seeder {
       const privileges = await this.privilegeSeeder.seed();
 
       const roles = await this.roleSeeder.seed(privileges);
-      
-      const superAdminRole = Array.isArray(roles) 
-        ? roles.find(r => r.roleName === 'SUPERADMIN') 
+
+      const superAdminRole = Array.isArray(roles)
+        ? roles.find((r) => r.roleName === 'SUPERADMIN')
         : roles;
 
       await this.userSeeder.seedSuperAdminUser(superAdminRole);

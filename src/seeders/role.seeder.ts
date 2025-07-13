@@ -2,6 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Role } from 'src/core/domain/role/role.domain';
 import { Privilege } from 'src/core/domain/privilege/privilege.domain';
 import { RoleUseCase } from 'src/core/ports/in/role/role-usecase.port';
+import {
+  PRIVILEGE_NAME,
+  PRIVILEGE_SUBNAME,
+} from 'src/common/enums/privilege/privilege.enum';
 
 @Injectable()
 export class RoleSeeder {
@@ -21,16 +25,29 @@ export class RoleSeeder {
     }
 
     // Filter privileges for different roles
-    const vendorPrivileges = privileges.filter(privilege => 
-      ['PRODUCT_MANAGEMENT', 'ORDER_MANAGEMENT', 'CATEGORY_MANAGEMENT', 'COUPON_MANAGEMENT'].includes(privilege.privilegeName)
+    const vendorPrivileges = privileges.filter((privilege) =>
+      [
+        'PRODUCT_MANAGEMENT',
+        'ORDER_MANAGEMENT',
+        'CATEGORY_MANAGEMENT',
+        'COUPON_MANAGEMENT',
+      ].includes(privilege.privilegeName),
     );
 
-    const staffPrivileges = privileges.filter(privilege => 
-      ['ORDER_MANAGEMENT', 'USER_MANAGEMENT', 'REVIEW_MANAGEMENT', 'PAYMENT_MANAGEMENT', 'SHIPPING_MANAGEMENT'].includes(privilege.privilegeName)
+    const staffPrivileges = privileges.filter((privilege) =>
+      [
+        'ORDER_MANAGEMENT',
+        'USER_MANAGEMENT',
+        'REVIEW_MANAGEMENT',
+        'PAYMENT_MANAGEMENT',
+        'SHIPPING_MANAGEMENT',
+      ].includes(privilege.privilegeName),
     );
 
-    const userPrivileges = privileges.filter(privilege => 
-      privilege.privilegeName === 'PRODUCT_MANAGEMENT' && privilege.privilegeSubName === 'PRODUCT_VIEW'
+    const userPrivileges = privileges.filter(
+      (privilege) =>
+        privilege.privilegeName === PRIVILEGE_NAME.PRODUCT_MANAGEMENT &&
+        privilege.privilegeSubName === PRIVILEGE_SUBNAME.PRODUCT_VIEW,
     );
 
     const role = await this.roleUseCase.createBulkRole([
@@ -50,8 +67,7 @@ export class RoleSeeder {
         roleName: 'USER',
         privileges: userPrivileges, // Only product view
       }),
-    ]
-    );
+    ]);
 
     this.logger.debug('Roles created : ' + JSON.stringify(role, null, 2));
 

@@ -9,6 +9,8 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 import { TypeOrmConfigService } from './infrastructure/database/typeorm.service';
 import { UserModule } from './modules/user/user.module';
 import { VendorModule } from './modules/vendor/vendor.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ProductModule } from './modules/product/product.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './frameworks/primary/guards/jwt-auth.guard';
 import { PrivilegeGuard } from './frameworks/primary/guards/privilege.guard';
@@ -40,6 +42,8 @@ import { UploadModule } from './modules/upload/upload.module';
     AuthModule,
     UserModule,
     VendorModule,
+    CategoryModule,
+    ProductModule,
     UploadModule,
   ],
   providers: [
