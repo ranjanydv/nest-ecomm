@@ -3,10 +3,12 @@ import {
   IsDateString,
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
   Matches,
+  IsPhoneNumber,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { QueryDto } from '../query.dto';
@@ -87,4 +89,67 @@ export class UpdateVendorDto extends PartialType(CreateVendorDto) {
   @IsEnum(VENDOR_STATUS)
   @IsOptional()
   status?: VENDOR_STATUS;
+}
+
+export class VendorRegistrationDto {
+  // User fields
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  userName?: string;
+
+  @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @ApiProperty({ required: false })
+  @IsPhoneNumber('NP')
+  @IsOptional()
+  phone?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  image?: string;
+
+  // Vendor fields
+  @ApiProperty()
+  @IsString()
+  storeName: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  logoUrl?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  bannerUrl?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  websiteUrl?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  phoneNumber?: string;
+
+  @ApiProperty({ required: false })
+  @IsDateString()
+  @IsOptional()
+  establishedDate?: string;
 }

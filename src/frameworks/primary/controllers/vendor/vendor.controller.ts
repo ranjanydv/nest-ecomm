@@ -19,8 +19,8 @@ import {
   CreateVendorDto,
   QueryVendorDto,
   UpdateVendorDto,
+  VendorRegistrationDto,
 } from '../../dto/request/vendor/vendor.dto';
-import { VendorRegistrationDto } from '../../dto/request/vendor/vendor-registration.dto';
 import { VendorUseCase } from 'src/core/ports/in/vendor/vendor-usecase.port';
 import { Vendor } from 'src/core/domain/vendor/vendor.domain';
 import { Privileges } from '../../decorators/privilege.decorator';
