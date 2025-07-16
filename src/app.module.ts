@@ -19,6 +19,7 @@ import { databaseConfig } from './infrastructure/config/database.config';
 import { authConfig } from './infrastructure/config/auth.config';
 import { LoggingInterceptor } from './frameworks/primary/interceptors/logging.interceptor';
 import { UploadModule } from './modules/upload/upload.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { UploadModule } from './modules/upload/upload.module';
     AuthModule,
     UserModule,
     VendorModule,
+    AddressModule,
     CategoryModule,
     ProductModule,
     UploadModule,
