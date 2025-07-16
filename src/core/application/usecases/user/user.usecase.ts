@@ -39,7 +39,11 @@ export class UserUseCaseImpl implements UserUseCase {
 
     const password = await bcrypt.hash(data.password, salt);
 
-    return await this.userRepository.createUser({ ...data, password });
+    return await this.userRepository.createUser({
+      ...data,
+      email: data.email.toLowerCase(),
+      password,
+    });
   }
 
   async createBulkUser(data: User[]): Promise<User[]> {

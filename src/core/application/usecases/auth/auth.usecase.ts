@@ -21,7 +21,9 @@ export class AuthUseCaseImpl implements AuthUseCase {
     token: string;
     user: User;
   }> {
-    const user = await this.userRepository.findUserWithPrivileges({ email });
+    const user = await this.userRepository.findUserWithPrivileges({
+      email: email.toLowerCase(),
+    });
 
     if (user.userStatus === USER_STATUS.ARCHIVED)
       throw new NotFoundException('User does not exist');
