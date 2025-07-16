@@ -20,6 +20,7 @@ import { authConfig } from './infrastructure/config/auth.config';
 import { LoggingInterceptor } from './frameworks/primary/interceptors/logging.interceptor';
 import { UploadModule } from './modules/upload/upload.module';
 import { AddressModule } from './modules/address/address.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { AddressModule } from './modules/address/address.module';
     AddressModule,
     CategoryModule,
     ProductModule,
+    OrderModule,
     UploadModule,
   ],
   providers: [
