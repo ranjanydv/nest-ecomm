@@ -35,4 +35,4 @@ export interface OrderItem {
   unitPrice: number;
   totalItemPrice: number;
   itemStatus: ORDER_ITEM_STATUS;
-} 
+}

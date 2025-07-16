@@ -4,40 +4,68 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { OrderUseCase } from 'src/core/ports/in/order/order-usecase.port';
-import { Order } from 'src/core/domain/order/order.domain';
+import { ResponseDto } from '../../dto/response/response.dto';
+import {
+  CreateOrderDto,
+  UpdateOrderDto,
+  QueryOrderDto,
+} from '../../dto/request/order/order.dto';
+import { OrderResponseDto } from '../../dto/response/order/order.dto';
 
-@Controller('orders')
+@ApiBearerAuth()
+@ApiTags('Order')
+@Controller('/orders')
 export class OrderController {
   constructor(private readonly orderUseCase: OrderUseCase) {}
 
   @Get()
-  async getAll(@Query() query: any) {
-    // TODO: Add pagination and filtering
-    return this.orderUseCase.getAllOrders({}, { pagination: false } as any);
+  @ApiOperation({ summary: 'Get all orders' })
+  async getAll(@Query() query: QueryOrderDto) {
+    const [orders, count] = await this.orderUseCase.getAllOrders({}, query);
+    const data = orders.map((order) => new OrderResponseDto(order));
+    return new ResponseDto('Orders Fetched', data, {
+      count,
+      page: (query as any).page ?? 1,
+      size: (query as any).size ?? data.length,
+    });
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string) {
-    return this.orderUseCase.getOrderById(id);
+  @ApiOperation({ summary: 'Get order by id' })
+  async getById(@Param('id', ParseUUIDPipe) id: string) {
+    const order = await this.orderUseCase.getOrderById(id);
+    return new ResponseDto('Order Fetched', new OrderResponseDto(order));
   }
 
   @Post()
-  async create(@Body() body: Order) {
-    return this.orderUseCase.createOrder(body);
+  @ApiOperation({ summary: 'Create order' })
+  async create(@Body() body: CreateOrderDto) {
+    const order = await this.orderUseCase.createOrder(body as any);
+    return new ResponseDto('Order Created', new OrderResponseDto(order));
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() body: Partial<Order>) {
-    return this.orderUseCase.updateOrderById(id, body);
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update order' })
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() body: UpdateOrderDto,
+  ) {
+    await this.orderUseCase.updateOrderById(id, body as any);
+    return new ResponseDto('Order Updated');
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return this.orderUseCase.deleteOrderById(id);
+  @ApiOperation({ summary: 'Delete order' })
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
+    await this.orderUseCase.deleteOrderById(id);
+    return new ResponseDto('Order Deleted');
   }
-} 
+}

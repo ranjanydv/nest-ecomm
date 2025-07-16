@@ -84,4 +84,4 @@ export class OrderEntity extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
-} 
+}

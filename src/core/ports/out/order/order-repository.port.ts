@@ -7,4 +7,4 @@ export abstract class OrderRepository {
   abstract update(id: Order['orderId'], data: Partial<Order>): Promise<void>;
   abstract delete(id: Order['orderId']): Promise<void>;
   abstract count(options?: Partial<Order>): Promise<number>;
-} 
+}

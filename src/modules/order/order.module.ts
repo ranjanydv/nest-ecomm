@@ -23,4 +23,4 @@ import { OrderItemEntity } from '../../frameworks/secondary/order/order-item.ent
   ],
   exports: [OrderUseCase],
 })
-export class OrderModule {} 
+export class OrderModule {}

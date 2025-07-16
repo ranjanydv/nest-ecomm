@@ -39,4 +39,4 @@ export class OrderUseCaseImpl implements OrderUseCase {
   async countOrders(options?: Partial<Order>): Promise<number> {
     return this.orderRepository.count(options);
   }
-} 
+}
