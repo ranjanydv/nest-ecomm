@@ -1,15 +1,14 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
   IsUUID,
   MaxLength,
-  IsBoolean,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
-import { QueryDto } from '../query.dto';
 import { ADDRESS_TYPE } from 'src/common/enums/address/address.enum';
+import { QueryDto } from '../query.dto';
 
 export class QueryAddressDto extends QueryDto {
   @ApiProperty({ required: false })

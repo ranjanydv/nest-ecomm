@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString, IsUUID, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';

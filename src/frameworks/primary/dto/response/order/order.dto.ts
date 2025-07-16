@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ApiProperty } from '@nestjs/swagger';
 import {
   ORDER_STATUS,
@@ -8,18 +10,25 @@ import {
 export class OrderItemResponseDto {
   @ApiProperty()
   orderItemId: string;
+
   @ApiProperty()
   productId: string;
+
   @ApiProperty({ required: false })
   variantId?: string;
+
   @ApiProperty()
   vendorId: string;
+
   @ApiProperty()
   quantity: number;
+
   @ApiProperty()
   unitPrice: number;
+
   @ApiProperty()
   totalItemPrice: number;
+
   @ApiProperty({ enum: ORDER_ITEM_STATUS })
   itemStatus: ORDER_ITEM_STATUS;
 
@@ -38,38 +47,55 @@ export class OrderItemResponseDto {
 export class OrderResponseDto {
   @ApiProperty()
   orderId: string;
+
   @ApiProperty()
   userId: string;
+
   @ApiProperty()
   orderDate: Date;
+
   @ApiProperty({ enum: ORDER_STATUS })
   status: ORDER_STATUS;
+
   @ApiProperty()
   totalAmount: number;
+
   @ApiProperty({ required: false })
   shippingAddressId?: string;
+
   @ApiProperty({ required: false })
   billingAddressId?: string;
+
   @ApiProperty()
   paymentMethod: string;
+
   @ApiProperty({ enum: PAYMENT_STATUS })
   paymentStatus: PAYMENT_STATUS;
+
   @ApiProperty({ required: false })
   shippingMethodId?: string;
+
   @ApiProperty({ default: 0 })
   shippingCost: number;
+
   @ApiProperty({ default: 0 })
   taxAmount: number;
+
   @ApiProperty({ default: 0 })
   discountAmount: number;
+
   @ApiProperty({ required: false })
   notes?: string;
+
   @ApiProperty({ required: false })
   trackingNumber?: string;
+
   @ApiProperty({ type: [OrderItemResponseDto] })
   items: OrderItemResponseDto[];
+
   @ApiProperty()
   createdAt: Date;
+
   @ApiProperty()
   updatedAt: Date;
 
