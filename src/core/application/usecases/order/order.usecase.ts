@@ -10,9 +10,10 @@ export class OrderUseCaseImpl implements OrderUseCase {
 
   async getAllOrders(
     options: Partial<Order>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     filter: PaginationProps,
   ): Promise<[Order[], number]> {
-    // TODO: Implement pagination logic if needed
+    // TODO: add pagination if needed
     const orders = await this.orderRepository.findAll(options);
     return [orders, orders.length];
   }
