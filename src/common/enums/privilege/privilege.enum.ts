@@ -49,6 +49,7 @@ export enum PRIVILEGE_SUBNAME {
   // Review Management
   REVIEW_VIEW = 'REVIEW_VIEW',
   REVIEW_APPROVE = 'REVIEW_APPROVE',
+  REVIEW_REPLY = 'REVIEW_REPLY',
   REVIEW_DELETE = 'REVIEW_DELETE',
 
   // Payment Management

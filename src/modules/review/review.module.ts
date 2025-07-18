@@ -9,6 +9,7 @@ import { ProductModule } from '../product/product.module';
 import { UserModule } from '../user/user.module';
 import { OrderModule } from '../order/order.module';
 import { ReviewController } from '../../frameworks/primary/controllers/review/review.controller';
+import { VendorModule } from '../vendor/vendor.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ReviewController } from '../../frameworks/primary/controllers/review/re
     ProductModule,
     UserModule,
     OrderModule,
+    VendorModule,
   ],
   controllers: [ReviewController],
   providers: [

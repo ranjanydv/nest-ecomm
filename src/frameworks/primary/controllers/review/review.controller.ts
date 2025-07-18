@@ -7,6 +7,8 @@ import {
   Patch,
   Post,
   Query,
+  createParamDecorator,
+  ExecutionContext,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ReviewUseCase } from 'src/core/ports/in/review/review-usecase.port';
@@ -19,12 +21,21 @@ import { ReviewResponseDto } from '../../dto/response/review/review.dto';
 import { plainToInstance } from 'class-transformer';
 import { Privileges } from '../../decorators/privilege.decorator';
 import { PRIVILEGE_SUBNAME } from 'src/common/enums/privilege/privilege.enum';
+import { ForbiddenException } from '@nestjs/common';
+import { ProductUseCase } from 'src/core/ports/in/product/product-usecase.port';
+import { AuthUser } from '../../decorators/user.decorator';
+import { User } from 'src/core/domain/user/user.domain';
+import { VendorUseCase } from 'src/core/ports/in/vendor/vendor-usecase.port';
 
 @ApiBearerAuth()
 @ApiTags('Reviews')
 @Controller('reviews')
 export class ReviewController {
-  constructor(private readonly reviewUseCase: ReviewUseCase) {}
+  constructor(
+    private readonly reviewUseCase: ReviewUseCase,
+    private readonly productUseCase: ProductUseCase,
+    private readonly vendorUseCase: VendorUseCase,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a review (only after purchase)' })
@@ -53,10 +64,25 @@ export class ReviewController {
 
   @Patch(':reviewId/reply')
   @ApiOperation({ summary: 'Vendor reply to a review' })
+  @Privileges(PRIVILEGE_SUBNAME.REVIEW_REPLY)
   async reply(
     @Param('reviewId', ParseUUIDPipe) reviewId: string,
     @Body() dto: ReplyReviewDto,
+    @AuthUser() user: User,
   ): Promise<void> {
+    // 1. Get the review
+    const review = await this.reviewUseCase.getReviewById(reviewId);
+    // 2. Get the product
+    const product = await this.productUseCase.getProductById(review.productId);
+    // 3. Check if the current user is the vendor of the product
+    const vendor = await this.vendorUseCase.getVendorById(product.vendorId);
+
+    if (vendor.userId !== user.userId) {
+      throw new ForbiddenException(
+        'Only the vendor of this product can reply to reviews.',
+      );
+    }
+    // 4. Allow reply
     await this.reviewUseCase.replyToReview(reviewId, dto.reply);
   }
 
