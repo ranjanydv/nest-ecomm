@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { User } from 'src/core/domain/user/user.domain';
@@ -21,6 +22,7 @@ export class PrivilegeGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const user: User = request.user;
 
     const role = await this.roleUseCase.getRoleById(user.role.roleId);
@@ -29,6 +31,7 @@ export class PrivilegeGuard implements CanActivate {
       role?.privileges?.map((privilege) => privilege.privilegeSubName) || [];
 
     return privilegeArr.some((privilege) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       return privileges.includes(PRIVILEGE_SUBNAME[privilege]);
     });
   }

@@ -26,9 +26,9 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('Nest E-Commerce')
+    .setTitle('E-Commerce')
     .setDescription(
-      'This API provides endpoints for managing users, roles, privileges, products, orders, and other resources in the Nest E-Commerce platform.',
+      'This API provides endpoints for managing users, roles, privileges, products, orders, and other resources in the E-Commerce platform.',
     )
     .setVersion('1.0')
     .addBearerAuth()

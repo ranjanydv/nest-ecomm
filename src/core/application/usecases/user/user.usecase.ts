@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
+import { USER_STATUS } from 'src/common/enums/user/user.enum';
 import { PaginationProps } from 'src/common/types/pagination.types';
 import { User } from 'src/core/domain/user/user.domain';
 import { RoleUseCase } from 'src/core/ports/in/role/role-usecase.port';
@@ -82,6 +83,22 @@ export class UserUseCaseImpl implements UserUseCase {
     return await this.userRepository.updateUser(
       { userId },
       { ...data, password },
+    );
+  }
+
+  async updateUserStatusById(userId: User['userId']): Promise<void> {
+    await this.checkUserExistsOrFail([{ userId }]);
+
+    const userData = await this.userRepository.findUser({ userId });
+
+    const newStatus =
+      userData.userStatus === USER_STATUS.ARCHIVED
+        ? USER_STATUS.NOT_VERIFIED
+        : USER_STATUS.ARCHIVED;
+
+    return await this.userRepository.updateUser(
+      { userId },
+      { userStatus: newStatus },
     );
   }
 

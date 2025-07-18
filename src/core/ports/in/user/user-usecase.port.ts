@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { PaginationProps } from 'src/common/types/pagination.types';
 import { User } from 'src/core/domain/user/user.domain';
 
@@ -19,6 +20,8 @@ export abstract class UserUseCase {
     id: User['userId'],
     data: Partial<User>,
   ): Promise<void>;
+
+  abstract updateUserStatusById(id: User['userId']): Promise<void>;
 
   abstract checkUserExistsOrFail(
     options: Partial<User>[],

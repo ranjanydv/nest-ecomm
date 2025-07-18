@@ -9,23 +9,23 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { PRIVILEGE_SUBNAME } from 'src/common/enums/privilege/privilege.enum';
+import { Role } from 'src/core/domain/role/role.domain';
+import { User } from 'src/core/domain/user/user.domain';
+import { UserUseCase } from 'src/core/ports/in/user/user-usecase.port';
+import { Transactional } from 'typeorm-transactional';
+import { Privileges } from '../../decorators/privilege.decorator';
+import {
+  CreateUserDto,
+  QueryUserDto,
+  UpdateUserDto,
+} from '../../dto/request/user/user.dto';
 import {
   ApiCustomResponse,
   ApiPaginatedResponse,
   ResponseDto,
 } from '../../dto/response/response.dto';
 import { UserResponseDto } from '../../dto/response/user/user.dto';
-import {
-  CreateUserDto,
-  QueryUserDto,
-  UpdateUserDto,
-} from '../../dto/request/user/user.dto';
-import { UserUseCase } from 'src/core/ports/in/user/user-usecase.port';
-import { User } from 'src/core/domain/user/user.domain';
-import { Role } from 'src/core/domain/role/role.domain';
-import { Privileges } from '../../decorators/privilege.decorator';
-import { PRIVILEGE_SUBNAME } from 'src/common/enums/privilege/privilege.enum';
-import { Transactional } from 'typeorm-transactional';
 
 @ApiBearerAuth()
 @ApiTags('User')
@@ -97,5 +97,15 @@ export class UserController {
     await this.userUseCase.updateUserById(userId, { ...updateUserDto, role });
 
     return new ResponseDto('User Updated');
+  }
+
+  @Patch('status/:userId')
+  @ApiOperation({ summary: 'Update user status' })
+  @Privileges(PRIVILEGE_SUBNAME.USER_ARCHIVE)
+  @Transactional()
+  async updateUserStatus(@Param('userId', ParseUUIDPipe) userId: string) {
+    await this.userUseCase.updateUserStatusById(userId);
+
+    return new ResponseDto('User Status Updated');
   }
 }
