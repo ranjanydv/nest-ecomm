@@ -7,28 +7,38 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { CartUseCase } from 'src/core/ports/in/cart/cart-usecase.port';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { User } from 'src/core/domain/user/user.domain';
+import { AuthUser } from '../../decorators/user.decorator';
 
 @ApiBearerAuth()
 @ApiTags('Cart')
-@Controller('/product')
+@Controller('cart')
 export class CartController {
   constructor(private readonly cartUseCase: CartUseCase) {}
 
-  @Get(':cartId')
-  @ApiOperation({ summary: 'Get cart details' })
-  getCart(@Param('cartId') cartId: string) {
-    return this.cartUseCase.getCart(cartId);
+  @Get()
+  @ApiOperation({ summary: 'Get current user cart' })
+  @ApiResponse({ status: 200, description: 'Cart fetched' })
+  getCart(@AuthUser() user: User) {
+    return this.cartUseCase.getCartByUserId(user.userId);
   }
 
-  @Post(':cartId/items')
-  @ApiOperation({ summary: 'Add items to Cart' })
-  addItem(@Param('cartId') cartId: string, @Body() dto: CreateCartItemDto) {
+  @Post('items')
+  @ApiOperation({ summary: 'Add item to cart' })
+  @ApiBody({ type: CreateCartItemDto })
+  addItem(@AuthUser() user: User, @Body() dto: CreateCartItemDto) {
     return this.cartUseCase.addItem(
-      cartId,
+      user.userId,
       dto.productId,
       dto.variantId ?? null,
       dto.quantity,
@@ -37,6 +47,8 @@ export class CartController {
   }
 
   @Patch('items/:cartItemId')
+  @ApiOperation({ summary: 'Update cart item quantity' })
+  @ApiBody({ type: UpdateCartItemDto })
   updateItem(
     @Param('cartItemId') cartItemId: string,
     @Body() dto: UpdateCartItemDto,
@@ -45,12 +57,14 @@ export class CartController {
   }
 
   @Delete('items/:cartItemId')
+  @ApiOperation({ summary: 'Remove item from cart' })
   removeItem(@Param('cartItemId') cartItemId: string) {
     return this.cartUseCase.removeItem(cartItemId);
   }
 
-  @Delete(':cartId/items')
-  clearCart(@Param('cartId') cartId: string) {
-    return this.cartUseCase.clearCart(cartId);
+  @Delete('items')
+  @ApiOperation({ summary: 'Clear all items from cart' })
+  clearCart(@AuthUser() user: User) {
+    return this.cartUseCase.clearCartByUserId(user.userId);
   }
 }

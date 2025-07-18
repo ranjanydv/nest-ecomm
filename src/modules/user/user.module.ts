@@ -18,10 +18,16 @@ import { PrivilegeEntity } from '../../frameworks/secondary/privilege/privilege.
 import { UserRepositoryImpl } from '../../frameworks/secondary/user/user.repository';
 import { RoleRepositoryImpl } from '../../frameworks/secondary/role/role.repository';
 import { PrivilegeRepositoryImpl } from '../../frameworks/secondary/privilege/privilege.repository';
+import { CartEntity } from 'src/frameworks/secondary/cart/cart.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, RoleEntity, PrivilegeEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      RoleEntity,
+      PrivilegeEntity,
+      CartEntity,
+    ]),
   ],
   controllers: [UserController, RoleController, PrivilegeController],
   providers: [

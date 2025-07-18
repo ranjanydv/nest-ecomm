@@ -5,19 +5,23 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { CartItemEntity } from './cart-item.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Entity('carts')
 export class CartEntity {
   @PrimaryGeneratedColumn('uuid')
   cart_id: string;
 
-  @Column({ type: 'uuid', nullable: true, unique: true })
-  user_id: string | null;
+  @Column({ type: 'uuid', unique: true })
+  user_id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true, unique: true })
-  session_id: string | null;
+  @ManyToOne(() => UserEntity, { nullable: false })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
 
   @CreateDateColumn()
   created_at: Date;

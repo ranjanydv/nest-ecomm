@@ -23,6 +23,13 @@ export class CartRepositoryImpl extends CartRepository {
     });
   }
 
+  async findCartByUserId(userId: string): Promise<CartEntity | null> {
+    return this.cartRepo.findOne({
+      where: { user_id: userId },
+      relations: ['items'],
+    });
+  }
+
   async saveCart(cart: CartEntity): Promise<CartEntity> {
     return this.cartRepo.save(cart);
   }
@@ -42,4 +49,4 @@ export class CartRepositoryImpl extends CartRepository {
   async clearCart(cartId: string): Promise<void> {
     await this.cartItemRepo.delete({ cart: { cart_id: cartId } });
   }
-} 
+}

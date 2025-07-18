@@ -7,9 +7,10 @@ import { CartController } from 'src/frameworks/primary/controllers/cart/cart.con
 import { CartEntity } from 'src/frameworks/secondary/cart/cart.entity';
 import { CartItemEntity } from 'src/frameworks/secondary/cart/cart-item.entity';
 import { CartRepositoryImpl } from 'src/frameworks/secondary/cart/cart.repository';
+import { UserEntity } from 'src/frameworks/secondary/user/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CartEntity, CartItemEntity])],
+  imports: [TypeOrmModule.forFeature([CartEntity, CartItemEntity, UserEntity])],
   controllers: [CartController],
   providers: [
     {

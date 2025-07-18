@@ -6,12 +6,15 @@ import { User } from 'src/core/domain/user/user.domain';
 import { RoleUseCase } from 'src/core/ports/in/role/role-usecase.port';
 import { UserUseCase } from 'src/core/ports/in/user/user-usecase.port';
 import { UserRepository } from 'src/core/ports/out/user/user-repository.port';
+import { CartRepository } from 'src/core/ports/out/cart/cart-repository.port';
+import { CartEntity } from 'src/frameworks/secondary/cart/cart.entity';
 
 @Injectable()
 export class UserUseCaseImpl implements UserUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly roleUseCase: RoleUseCase,
+    private readonly cartRepository: CartRepository,
   ) {}
 
   async getAllUsers(
@@ -37,14 +40,17 @@ export class UserUseCaseImpl implements UserUseCase {
     await this.roleUseCase.checkRoleExistsOrFail([data.role]);
 
     const salt = await bcrypt.genSalt(10);
-
     const password = await bcrypt.hash(data.password, salt);
-
-    return await this.userRepository.createUser({
+    const user = await this.userRepository.createUser({
       ...data,
       email: data.email.toLowerCase(),
       password,
     });
+    // Create a cart for the user
+    const cart = new CartEntity();
+    cart.user_id = user.userId;
+    await this.cartRepository.saveCart(cart);
+    return user;
   }
 
   async createBulkUser(data: User[]): Promise<User[]> {

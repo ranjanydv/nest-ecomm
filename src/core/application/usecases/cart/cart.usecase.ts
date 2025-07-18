@@ -51,4 +51,16 @@ export class CartUseCaseImpl extends CartUseCase {
   async clearCart(cartId: string): Promise<void> {
     return this.cartRepository.clearCart(cartId);
   }
+
+  async getCartByUserId(userId: string): Promise<CartEntity> {
+    const cart = await this.cartRepository.findCartByUserId(userId);
+    if (!cart) throw new NotFoundException('Cart not found');
+    return cart;
+  }
+
+  async clearCartByUserId(userId: string): Promise<void> {
+    const cart = await this.cartRepository.findCartByUserId(userId);
+    if (!cart) throw new NotFoundException('Cart not found');
+    return this.cartRepository.clearCart(cart.cart_id);
+  }
 }

@@ -20,4 +20,7 @@ export abstract class CartUseCase {
   abstract removeItem(cartItemId: string): Promise<void>;
 
   abstract clearCart(cartId: string): Promise<void>;
-} 
+
+  abstract getCartByUserId(userId: string): Promise<CartEntity>;
+  abstract clearCartByUserId(userId: string): Promise<void>;
+}

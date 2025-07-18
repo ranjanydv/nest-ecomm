@@ -8,4 +8,5 @@ export abstract class CartRepository {
   abstract updateItem(cartItem: CartItemEntity): Promise<CartItemEntity>;
   abstract removeItem(cartItemId: string): Promise<void>;
   abstract clearCart(cartId: string): Promise<void>;
-} 
+  abstract findCartByUserId(userId: string): Promise<CartEntity | null>;
+}
