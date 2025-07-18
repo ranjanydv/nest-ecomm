@@ -36,9 +36,10 @@ export class CartController {
   @Post('items')
   @ApiOperation({ summary: 'Add item to cart' })
   @ApiBody({ type: CreateCartItemDto })
-  addItem(@AuthUser() user: User, @Body() dto: CreateCartItemDto) {
+  async addItem(@AuthUser() user: User, @Body() dto: CreateCartItemDto) {
+    const cart = await this.cartUseCase.getCartByUserId(user.userId);
     return this.cartUseCase.addItem(
-      user.userId,
+      cart.cart_id,
       dto.productId,
       dto.variantId ?? null,
       dto.quantity,
