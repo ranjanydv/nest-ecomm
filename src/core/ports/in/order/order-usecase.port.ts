@@ -19,4 +19,9 @@ export abstract class OrderUseCase {
   abstract deleteOrderById(id: Order['orderId']): Promise<void>;
 
   abstract countOrders(options?: Partial<Order>): Promise<number>;
+
+  abstract userHasPurchasedProduct(
+    userId: string,
+    productId: string,
+  ): Promise<boolean>;
 }

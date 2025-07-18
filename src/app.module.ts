@@ -21,6 +21,7 @@ import { LoggingInterceptor } from './frameworks/primary/interceptors/logging.in
 import { UploadModule } from './modules/upload/upload.module';
 import { AddressModule } from './modules/address/address.module';
 import { OrderModule } from './modules/order/order.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { OrderModule } from './modules/order/order.module';
     CategoryModule,
     ProductModule,
     OrderModule,
+    ReviewModule,
     UploadModule,
   ],
   providers: [
