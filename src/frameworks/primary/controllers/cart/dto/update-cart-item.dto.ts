@@ -5,4 +5,5 @@ export class UpdateCartItemDto {
   @ApiProperty()
   @IsInt()
   quantity: number;
-} 
+}
+

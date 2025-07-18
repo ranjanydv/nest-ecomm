@@ -12,13 +12,14 @@ import { UserRepository } from 'src/core/ports/out/user/user-repository.port';
 import { PrivilegeController } from 'src/frameworks/primary/controllers/privilege/privilege.controller';
 import { RoleController } from 'src/frameworks/primary/controllers/role/role.controller';
 import { UserController } from 'src/frameworks/primary/controllers/user/user.controller';
-import { UserEntity } from '../../frameworks/secondary/user/user.entity';
-import { RoleEntity } from '../../frameworks/secondary/role/role.entity';
-import { PrivilegeEntity } from '../../frameworks/secondary/privilege/privilege.entity';
-import { UserRepositoryImpl } from '../../frameworks/secondary/user/user.repository';
-import { RoleRepositoryImpl } from '../../frameworks/secondary/role/role.repository';
-import { PrivilegeRepositoryImpl } from '../../frameworks/secondary/privilege/privilege.repository';
 import { CartEntity } from 'src/frameworks/secondary/cart/cart.entity';
+import { PrivilegeEntity } from '../../frameworks/secondary/privilege/privilege.entity';
+import { PrivilegeRepositoryImpl } from '../../frameworks/secondary/privilege/privilege.repository';
+import { RoleEntity } from '../../frameworks/secondary/role/role.entity';
+import { RoleRepositoryImpl } from '../../frameworks/secondary/role/role.repository';
+import { UserEntity } from '../../frameworks/secondary/user/user.entity';
+import { UserRepositoryImpl } from '../../frameworks/secondary/user/user.repository';
+import { CartModule } from '../cart/cart.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CartEntity } from 'src/frameworks/secondary/cart/cart.entity';
       PrivilegeEntity,
       CartEntity,
     ]),
+    CartModule,
   ],
   controllers: [UserController, RoleController, PrivilegeController],
   providers: [

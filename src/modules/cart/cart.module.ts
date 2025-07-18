@@ -22,6 +22,6 @@ import { UserEntity } from 'src/frameworks/secondary/user/user.entity';
       useClass: CartRepositoryImpl,
     },
   ],
-  exports: [CartUseCase],
+  exports: [CartUseCase, CartRepository],
 })
 export class CartModule {}
