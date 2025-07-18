@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { CartEntity } from './cart.entity';
 
 @Entity('cart_items')
@@ -23,4 +29,4 @@ export class CartItemEntity {
 
   @CreateDateColumn()
   added_at: Date;
-} 
+}

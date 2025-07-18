@@ -51,4 +51,4 @@ export class CartUseCaseImpl extends CartUseCase {
   async clearCart(cartId: string): Promise<void> {
     return this.cartRepository.clearCart(cartId);
   }
-} 
+}

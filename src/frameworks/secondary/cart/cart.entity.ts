@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { CartItemEntity } from './cart-item.entity';
 
 @Entity('carts')
@@ -23,4 +30,4 @@ export class CartEntity {
 
   @OneToMany(() => CartItemEntity, (item) => item.cart, { cascade: true })
   items: CartItemEntity[];
-} 
+}

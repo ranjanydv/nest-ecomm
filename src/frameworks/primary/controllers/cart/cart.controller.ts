@@ -10,17 +10,22 @@ import {
 import { CartUseCase } from 'src/core/ports/in/cart/cart-usecase.port';
 import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller('cart')
+@ApiBearerAuth()
+@ApiTags('Cart')
+@Controller('/product')
 export class CartController {
   constructor(private readonly cartUseCase: CartUseCase) {}
 
   @Get(':cartId')
+  @ApiOperation({ summary: 'Get cart details' })
   getCart(@Param('cartId') cartId: string) {
     return this.cartUseCase.getCart(cartId);
   }
 
   @Post(':cartId/items')
+  @ApiOperation({ summary: 'Add items to Cart' })
   addItem(@Param('cartId') cartId: string, @Body() dto: CreateCartItemDto) {
     return this.cartUseCase.addItem(
       cartId,

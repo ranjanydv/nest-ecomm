@@ -22,6 +22,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { AddressModule } from './modules/address/address.module';
 import { OrderModule } from './modules/order/order.module';
 import { ReviewModule } from './modules/review/review.module';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { ReviewModule } from './modules/review/review.module';
     ProductModule,
     OrderModule,
     ReviewModule,
+    CartModule,
     UploadModule,
   ],
   providers: [
