@@ -8,10 +8,18 @@ import { WishlistEntity } from 'src/frameworks/secondary/wishlist/wishlist.entit
 import { WishlistItemEntity } from 'src/frameworks/secondary/wishlist/wishlist-item.entity';
 import { WishlistRepositoryImpl } from 'src/frameworks/secondary/wishlist/wishlist.repository';
 import { UserEntity } from 'src/frameworks/secondary/user/user.entity';
+import { ProductEntity } from 'src/frameworks/secondary/product/product.entity';
+import { ProductModule } from '../product/product.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([WishlistEntity, WishlistItemEntity, UserEntity]),
+    TypeOrmModule.forFeature([
+      WishlistEntity,
+      WishlistItemEntity,
+      UserEntity,
+      ProductEntity,
+    ]),
+    ProductModule,
   ],
   controllers: [WishlistController],
   providers: [

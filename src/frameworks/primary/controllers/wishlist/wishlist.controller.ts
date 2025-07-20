@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -10,18 +13,43 @@ import { WishlistUseCase } from 'src/core/ports/in/wishlist/wishlist-usecase.por
 import { CreateWishlistItemDto } from './dto/create-wishlist-item.dto';
 import { User } from 'src/core/domain/user/user.domain';
 import { AuthUser } from '../../decorators/user.decorator';
+import { WishlistResponseDto } from './dto/wishlist-response.dto';
+import { ProductUseCase } from 'src/core/ports/in/product/product-usecase.port';
 
 @ApiBearerAuth()
 @ApiTags('Wishlist')
 @Controller('wishlist')
 export class WishlistController {
-  constructor(private readonly wishlistUseCase: WishlistUseCase) {}
+  constructor(
+    private readonly wishlistUseCase: WishlistUseCase,
+    private readonly productUseCase: ProductUseCase,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get current user wishlist' })
-  @ApiResponse({ status: 200, description: 'Wishlist fetched' })
-  getWishlist(@AuthUser() user: User) {
-    return this.wishlistUseCase.getWishlistByUserId(user.userId);
+  @ApiResponse({
+    status: 200,
+    description: 'Wishlist fetched',
+    type: WishlistResponseDto,
+  })
+  async getWishlist(@AuthUser() user: User): Promise<WishlistResponseDto> {
+    const wishlist = await this.wishlistUseCase.getWishlistByUserId(
+      user.userId,
+    );
+    // Enrich items with product details
+    const items = await Promise.all(
+      (wishlist.items || []).map(async (item) => {
+        let product = null;
+        try {
+          product = await this.productUseCase.getProductById(item.product_id);
+        } catch {
+          // If product not found or unavailable, omit the product field
+          return { ...item };
+        }
+        return { ...item, product };
+      }),
+    );
+    return new WishlistResponseDto({ ...wishlist, items });
   }
 
   @Post('items')
@@ -31,6 +59,7 @@ export class WishlistController {
     const wishlist = await this.wishlistUseCase.getWishlistByUserId(
       user.userId,
     );
+
     return this.wishlistUseCase.addItem(wishlist.wishlist_id, dto.productId);
   }
 

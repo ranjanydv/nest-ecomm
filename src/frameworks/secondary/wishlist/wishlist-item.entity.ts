@@ -19,7 +19,9 @@ export class WishlistItemEntity {
   @Column({ type: 'uuid' })
   wishlist_id: string;
 
-  @ManyToOne(() => WishlistEntity, (wishlist) => wishlist.items, { onDelete: 'CASCADE' })
+  @ManyToOne(() => WishlistEntity, (wishlist) => wishlist.items, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'wishlist_id' })
   wishlist: WishlistEntity;
 
@@ -32,4 +34,4 @@ export class WishlistItemEntity {
 
   @CreateDateColumn()
   added_at: Date;
-} 
+}
