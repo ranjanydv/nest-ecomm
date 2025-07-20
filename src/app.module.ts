@@ -23,6 +23,7 @@ import { AddressModule } from './modules/address/address.module';
 import { OrderModule } from './modules/order/order.module';
 import { ReviewModule } from './modules/review/review.module';
 import { CartModule } from './modules/cart/cart.module';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { CartModule } from './modules/cart/cart.module';
     OrderModule,
     ReviewModule,
     CartModule,
+    WishlistModule,
     UploadModule,
   ],
   providers: [
