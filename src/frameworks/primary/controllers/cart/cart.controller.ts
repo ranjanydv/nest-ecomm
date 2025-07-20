@@ -51,10 +51,10 @@ export class CartController {
   @ApiOperation({ summary: 'Update cart item quantity' })
   @ApiBody({ type: UpdateCartItemDto })
   updateItem(
-    @Param('cartItemId') cartItemId: string,
+    @Param('cartItemId') cartItmId: string,
     @Body() dto: UpdateCartItemDto,
   ) {
-    return this.cartUseCase.updateItem(cartItemId, dto.quantity);
+    return this.cartUseCase.updateItem(cartItmId, dto.quantity);
   }
 
   @Delete('items/:cartItemId')

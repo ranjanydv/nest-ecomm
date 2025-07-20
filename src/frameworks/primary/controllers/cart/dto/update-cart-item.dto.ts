@@ -6,4 +6,3 @@ export class UpdateCartItemDto {
   @IsInt()
   quantity: number;
 }
-
