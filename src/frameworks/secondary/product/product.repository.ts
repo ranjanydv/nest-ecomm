@@ -87,7 +87,15 @@ export class ProductRepositoryImpl implements ProductRepository {
     return await this.productRepository.existsBy({ slug });
   }
 
-  async skuExists(sku: string): Promise<boolean> {
-    return await this.productRepository.existsBy({ sku });
+  async skuExists(sku: string, productId?: string): Promise<boolean> {
+    const query = this.productRepository
+      .createQueryBuilder('product')
+      .where('product.sku = :sku', { sku });
+
+    if (productId) {
+      query.andWhere('product.productId != :productId', { productId });
+    }
+
+    return (await query.getCount()) > 0;
   }
 }

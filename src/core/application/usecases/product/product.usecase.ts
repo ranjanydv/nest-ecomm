@@ -37,6 +37,11 @@ export class ProductUseCaseImpl implements ProductUseCase {
       { vendorId: data.vendorId },
     ]);
 
+    // Check Sale Price Validation
+    if (data.price && data.salePrice && data.price < data.salePrice) {
+      throw new BadRequestException('Sale price must be less than price');
+    }
+
     // Generate unique slug if not provided
     if (!data.slug) {
       const baseSlug = generateSlug(data.name);
@@ -88,7 +93,7 @@ export class ProductUseCaseImpl implements ProductUseCase {
     productId: Product['productId'],
     data: Partial<Product>,
   ): Promise<void> {
-    await this.checkProductExistsOrFail([{ productId }]);
+    const product = await this.getProductById(productId);
 
     if (data.vendorId) {
       await this.vendorUseCase.checkVendorExistsOrFail([
@@ -97,10 +102,20 @@ export class ProductUseCaseImpl implements ProductUseCase {
     }
 
     if (data.sku) {
-      const skuExists = await this.productRepository.skuExists(data.sku);
+      const skuExists = await this.productRepository.skuExists(
+        data.sku,
+        productId,
+      );
       if (skuExists) {
         throw new BadRequestException('SKU already exists');
       }
+    }
+
+    const price = data.price ?? product.price;
+    const salePrice = data.salePrice ?? product.salePrice;
+
+    if (price && salePrice && price < salePrice) {
+      throw new BadRequestException('Sale price must be less than price');
     }
 
     return await this.productRepository.updateProduct({ productId }, data);

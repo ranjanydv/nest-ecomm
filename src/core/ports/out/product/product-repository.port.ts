@@ -26,5 +26,5 @@ export abstract class ProductRepository {
 
   abstract slugExists(slug: string): Promise<boolean>;
 
-  abstract skuExists(sku: string): Promise<boolean>;
+  abstract skuExists(sku: string, productId?: string): Promise<boolean>;
 }
