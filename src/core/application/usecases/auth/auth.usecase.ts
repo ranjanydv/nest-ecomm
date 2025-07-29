@@ -30,6 +30,9 @@ export class AuthUseCaseImpl implements AuthUseCase {
     const user = await this.userRepository.findUserWithPrivileges({
       email: email.toLowerCase(),
     });
+    if (!user) {
+      throw new BadRequestException('Invalid Credentials');
+    }
 
     if (user.userStatus === USER_STATUS.ARCHIVED)
       throw new NotFoundException('User does not exist');
@@ -41,6 +44,11 @@ export class AuthUseCaseImpl implements AuthUseCase {
     const isMatched = await bcrypt.compare(password, userPassword);
 
     if (!isMatched) throw new BadRequestException('Invalid Credentials');
+
+    // Check if User is Verified
+    if (user.userStatus !== USER_STATUS.VERIFIED) {
+      throw new BadRequestException('User is not verified');
+    }
 
     const payload = { sub: user.userId };
 
@@ -84,7 +92,7 @@ export class AuthUseCaseImpl implements AuthUseCase {
       phone: data.phone,
       email: data.email.toLowerCase(),
       password: hashedPassword,
-      userStatus: USER_STATUS.VERIFIED,
+      userStatus: USER_STATUS.NOT_VERIFIED,
     });
     // Create a cart for the user
     const cart = new CartEntity();
@@ -94,7 +102,12 @@ export class AuthUseCaseImpl implements AuthUseCase {
   }
 
   async getProfileById(userId: User['userId']) {
-    return await this.userRepository.findUserWithPrivileges({ userId });
+    const userData = await this.userRepository.findUserWithPrivileges({
+      userId,
+    });
+
+    if (!userData) throw new NotFoundException('User not found');
+    return userData;
   }
 
   async changePasswordById(

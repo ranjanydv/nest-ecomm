@@ -62,16 +62,17 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async findUserWithPrivileges(options: Partial<User>): Promise<User> {
-    return User.toDomain(
-      await this.userRepository.findOneOrFail({
-        where: options,
-        relations: {
-          role: {
-            privileges: true,
-          },
+    // return User.toDomain(
+    const entity = await this.userRepository.findOne({
+      where: options,
+      relations: {
+        role: {
+          privileges: true,
         },
-      }),
-    );
+      },
+    });
+    // );
+    return entity ? User.toDomain(entity) : null;
   }
 
   async findUserPassword(
