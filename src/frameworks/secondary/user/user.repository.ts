@@ -6,6 +6,7 @@ import { PaginationProps } from 'src/common/types/pagination.types';
 import { User } from 'src/core/domain/user/user.domain';
 import { UserRepository } from 'src/core/ports/out/user/user-repository.port';
 import { getPaginationSortParams } from 'src/utils/util.index';
+import { CreateUserProps } from 'src/core/domain/user/user.types';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -41,15 +42,23 @@ export class UserRepositoryImpl implements UserRepository {
     return [User.toDomains(users), count] as [User[], number];
   }
 
-  async findUser(options: Partial<User>): Promise<User> {
-    return User.toDomain(
-      await this.userRepository.findOneOrFail({
-        where: options,
-        relations: {
-          role: true,
-        },
-      }),
-    );
+  // async findUser(options: Partial<User>): Promise<User> {
+  //   return User.toDomain(
+  //     await this.userRepository.findOneOrFail({
+  //       where: options,
+  //       relations: {
+  //         role: true,
+  //       },
+  //     }),
+  //   );
+  async findUser(options: Partial<User>): Promise<User | null> {
+    const entity = await this.userRepository.findOne({
+      where: options,
+      relations: {
+        role: true,
+      },
+    });
+    return entity ? User.toDomain(entity) : null;
   }
 
   async findUserWithPrivileges(options: Partial<User>): Promise<User> {
@@ -78,7 +87,7 @@ export class UserRepositoryImpl implements UserRepository {
     return user.password;
   }
 
-  async createUser(data: User): Promise<User> {
+  async createUser(data: CreateUserProps): Promise<User> {
     return User.toDomain(
       await this.userRepository.save(this.userRepository.create(data)),
     );

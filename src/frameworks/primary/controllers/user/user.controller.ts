@@ -5,21 +5,15 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
-  Post,
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PRIVILEGE_SUBNAME } from 'src/common/enums/privilege/privilege.enum';
 import { Role } from 'src/core/domain/role/role.domain';
-import { User } from 'src/core/domain/user/user.domain';
 import { UserUseCase } from 'src/core/ports/in/user/user-usecase.port';
 import { Transactional } from 'typeorm-transactional';
 import { Privileges } from '../../decorators/privilege.decorator';
-import {
-  CreateUserDto,
-  QueryUserDto,
-  UpdateUserDto,
-} from '../../dto/request/user/user.dto';
+import { QueryUserDto, UpdateUserDto } from '../../dto/request/user/user.dto';
 import {
   ApiCustomResponse,
   ApiPaginatedResponse,
@@ -68,17 +62,17 @@ export class UserController {
     );
   }
 
-  @Post()
-  @ApiOperation({ summary: 'Create user' })
-  @Privileges(PRIVILEGE_SUBNAME.USER_CREATE)
-  @Transactional()
-  async create(@Body() createUserDto: CreateUserDto) {
-    const role = Object.assign(new Role(), { roleId: createUserDto.roleId });
+  // @Post()
+  // @ApiOperation({ summary: 'Create user' })
+  // @Privileges(PRIVILEGE_SUBNAME.USER_CREATE)
+  // @Transactional()
+  // async create(@Body() createUserDto: CreateUserDto) {
+  //   const role = Object.assign(new Role(), { roleId: createUserDto.roleId });
 
-    await this.userUseCase.createUser(User.create({ ...createUserDto, role }));
+  //   await this.userUseCase.createUser(User.create({ ...createUserDto, role }));
 
-    return new ResponseDto('User Created');
-  }
+  //   return new ResponseDto('User Created');
+  // }
 
   @Patch(':userId')
   @ApiOperation({ summary: 'Update user' })

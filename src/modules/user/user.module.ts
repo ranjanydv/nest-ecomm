@@ -58,6 +58,12 @@ import { CartModule } from '../cart/cart.module';
       useClass: PrivilegeRepositoryImpl,
     },
   ],
-  exports: [UserUseCase, RoleUseCase, PrivilegeUseCase, UserRepository],
+  exports: [
+    UserUseCase,
+    RoleUseCase,
+    PrivilegeUseCase,
+    UserRepository,
+    RoleRepository,
+  ],
 })
 export class UserModule {}

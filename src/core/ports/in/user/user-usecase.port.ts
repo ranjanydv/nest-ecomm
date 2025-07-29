@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { PaginationProps } from 'src/common/types/pagination.types';
 import { User } from 'src/core/domain/user/user.domain';
+import { CreateUserProps } from 'src/core/domain/user/user.types';
 
 export abstract class UserUseCase {
   abstract getAllUsers(
@@ -12,7 +13,7 @@ export abstract class UserUseCase {
 
   abstract getUserByEmail(email: User['email']): Promise<User>;
 
-  abstract createUser(data: User): Promise<User>;
+  abstract createUser(data: CreateUserProps): Promise<User>;
 
   abstract createBulkUser(data: User[]): Promise<User[]>;
 

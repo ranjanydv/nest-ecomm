@@ -3,11 +3,11 @@ import * as bcrypt from 'bcryptjs';
 import { USER_STATUS } from 'src/common/enums/user/user.enum';
 import { PaginationProps } from 'src/common/types/pagination.types';
 import { User } from 'src/core/domain/user/user.domain';
+import { CreateUserProps } from 'src/core/domain/user/user.types';
 import { RoleUseCase } from 'src/core/ports/in/role/role-usecase.port';
 import { UserUseCase } from 'src/core/ports/in/user/user-usecase.port';
-import { UserRepository } from 'src/core/ports/out/user/user-repository.port';
 import { CartRepository } from 'src/core/ports/out/cart/cart-repository.port';
-import { CartEntity } from 'src/frameworks/secondary/cart/cart.entity';
+import { UserRepository } from 'src/core/ports/out/user/user-repository.port';
 
 @Injectable()
 export class UserUseCaseImpl implements UserUseCase {
@@ -36,20 +36,8 @@ export class UserUseCaseImpl implements UserUseCase {
     return await this.userRepository.findUser({ email });
   }
 
-  async createUser(data: User): Promise<User> {
-    await this.roleUseCase.checkRoleExistsOrFail([data.role]);
-
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(data.password, salt);
-    const user = await this.userRepository.createUser({
-      ...data,
-      email: data.email.toLowerCase(),
-      password,
-    });
-    // Create a cart for the user
-    const cart = new CartEntity();
-    cart.user_id = user.userId;
-    await this.cartRepository.saveCart(cart);
+  async createUser(data: CreateUserProps): Promise<User> {
+    const user = await this.userRepository.createUser(data);
     return user;
   }
 

@@ -1,5 +1,6 @@
 import { User } from 'src/core/domain/user/user.domain';
 import { PaginationProps } from 'src/common/types/pagination.types';
+import { CreateUserProps } from 'src/core/domain/user/user.types';
 
 export abstract class UserRepository {
   abstract findAllUsers(
@@ -15,7 +16,7 @@ export abstract class UserRepository {
     options: Pick<User, 'userId'> | Pick<User, 'email'> | Pick<User, 'phone'>,
   ): Promise<string>;
 
-  abstract createUser(data: User): Promise<User>;
+  abstract createUser(data: CreateUserProps): Promise<User>;
 
   abstract createBulkUser(data: User[]): Promise<User[]>;
 

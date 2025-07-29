@@ -10,7 +10,7 @@ import { Seeder } from './seeder';
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
 
-  NestFactory.createApplicationContext(SeederModule)
+  await NestFactory.createApplicationContext(SeederModule)
     .then((appContext) => {
       const logger = appContext.get(Logger);
       const seeder = appContext.get(Seeder);
@@ -23,6 +23,7 @@ async function bootstrap() {
           logger.error('Seeding failed!');
           throw error;
         })
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         .finally(() => appContext.close());
     })
     .catch((error) => {
@@ -30,4 +31,4 @@ async function bootstrap() {
     });
 }
 
-bootstrap();
+void bootstrap();

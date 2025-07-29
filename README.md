@@ -42,8 +42,8 @@ The project is structured to isolate the core business logic from the outside wo
     Create a `.env` file.
     Update the `.env` file with your PostgreSQL database credentials and other environment-specific settings.
 
-4.  **Run Database Migrations:**
-    Apply the database migrations to set up the required tables.
+4.  **Run Database Migrations (Optional):**
+    Apply the database migrations to set up the required tables. Synchronization is set to true by default, which will update the database on server startup
     ```bash
     pnpm run migration:run
     ```
